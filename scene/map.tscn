@@ -1,0 +1,113 @@
+[gd_scene load_steps=15 format=3 uid="uid://dw7wm5yd4j1l0"]
+
+[ext_resource type="Texture2D" uid="uid://3fmje1avd6k4" path="res://sprite/tilemap/genmap final.png" id="1_gjxpd"]
+[ext_resource type="Script" path="res://gdscript/TileMap.gd" id="2_1axdx"]
+[ext_resource type="Texture2D" uid="uid://cq0vw3fs0hojb" path="res://sprite/tilemap/grass.png" id="3_838ac"]
+[ext_resource type="Script" path="res://gdscript/CameraControl.gd" id="4_4l07h"]
+[ext_resource type="FontFile" uid="uid://l5o4yvv6py4l" path="res://Kobata-Regular.otf" id="5_ncjkh"]
+[ext_resource type="Script" path="res://scene/Label.gd" id="6_tun10"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_5l2sf"]
+vertices = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_kmnv6"]
+vertices = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_quaaa"]
+vertices = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)])
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_xwuaa"]
+texture = ExtResource("1_gjxpd")
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_5l2sf")
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+0:2/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_kmnv6")
+0:3/0 = 0
+0:3/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:3/0/physics_layer_0/angular_velocity = 0.0
+0:3/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_quaaa")
+0:4/0 = 0
+0:4/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:4/0/physics_layer_0/angular_velocity = 0.0
+0:5/0 = 0
+0:5/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:5/0/physics_layer_0/angular_velocity = 0.0
+0:6/0 = 0
+0:6/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:6/0/physics_layer_0/angular_velocity = 0.0
+0:7/0 = 0
+0:7/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:7/0/physics_layer_0/angular_velocity = 0.0
+
+[sub_resource type="TileSet" id="TileSet_sd55k"]
+physics_layer_0/collision_layer = 8
+physics_layer_0/collision_mask = 0
+navigation_layer_0/layers = 1
+sources/1 = SubResource("TileSetAtlasSource_xwuaa")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rqfk8"]
+frequency = 0.008
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_en8lv"]
+texture = ExtResource("3_838ac")
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_2p3gp"]
+sources/1 = SubResource("TileSetAtlasSource_en8lv")
+
+[node name="Node2D" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+position = Vector2(0, 1)
+tile_set = SubResource("TileSet_sd55k")
+format = 2
+script = ExtResource("2_1axdx")
+altitude = SubResource("FastNoiseLite_rqfk8")
+
+[node name="grass" type="TileMap" parent="TileMap"]
+tile_set = SubResource("TileSet_2p3gp")
+format = 2
+
+[node name="buissplacer" type="Node2D" parent="TileMap"]
+y_sort_enabled = true
+
+[node name="bouffplacer" type="Node2D" parent="TileMap"]
+y_sort_enabled = true
+
+[node name="treeplacer" type="Node2D" parent="TileMap"]
+y_sort_enabled = true
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="CameraControl" type="Camera2D" parent="."]
+position = Vector2(1734, 970)
+script = ExtResource("4_4l07h")
+metadata/_edit_group_ = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = -2.0
+offset_top = 1.0
+offset_right = 267.0
+offset_bottom = 104.0
+theme_override_fonts/font = ExtResource("5_ncjkh")
+theme_override_font_sizes/font_size = 50
+text = "lorem ipsum"
+uppercase = true
+script = ExtResource("6_tun10")

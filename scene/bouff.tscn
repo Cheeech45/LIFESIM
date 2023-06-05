@@ -1,0 +1,112 @@
+[gd_scene load_steps=11 format=3 uid="uid://c8r2j4phl1u10"]
+
+[ext_resource type="Texture2D" uid="uid://i3djdbxk8xl5" path="res://sprite/bouff.png" id="1_g257r"]
+[ext_resource type="Script" path="res://gdscript/bouff.gd" id="1_rsc4n"]
+[ext_resource type="FontFile" uid="uid://l5o4yvv6py4l" path="res://Kobata-Regular.otf" id="3_x5b02"]
+[ext_resource type="AudioStream" uid="uid://dyik6reexnrs1" path="res://sounds/death.ogg" id="4_376hy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cu07e"]
+radius = 167.57
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lu3au"]
+resource_local_to_scene = true
+custom_solver_bias = 1.0
+
+[sub_resource type="Curve" id="Curve_d7mhc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.957831, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4ewkm"]
+curve = SubResource("Curve_d7mhc")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tdend"]
+emission_shape = 1
+emission_sphere_radius = 7.74
+particle_flag_disable_z = true
+direction = Vector3(0, -80, 0)
+spread = 79.11
+gravity = Vector3(0, 400, 0)
+initial_velocity_min = 71.05
+initial_velocity_max = 81.58
+angular_velocity_min = 0.61
+angular_velocity_max = 0.61
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_min = 3.0
+angle_max = 260.7
+scale_min = 5.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_4ewkm")
+color = Color(0.270588, 0.196078, 0.0901961, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_avsi1"]
+radius = 24.0093
+
+[node name="Node2D" type="CharacterBody2D"]
+position = Vector2(1, 1)
+scale = Vector2(1.5, 1.5)
+collision_mask = 24
+input_pickable = true
+motion_mode = 1
+wall_min_slide_angle = 0.0
+safe_margin = 10.0
+script = ExtResource("1_rsc4n")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_cu07e")
+debug_color = Color(0.972549, 0, 0.45098, 0.419608)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_lu3au")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_g257r")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+neighbor_distance = 20.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(0, 15)
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_tdend")
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.94
+randomness = 0.14
+
+[node name="Label" type="Label" parent="."]
+offset_left = -34.6667
+offset_top = -38.6667
+offset_right = 37.3333
+offset_bottom = -12.6667
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("3_x5b02")
+
+[node name="Zonebouffage" type="Area2D" parent="."]
+collision_layer = 128
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zonebouffage"]
+shape = SubResource("CircleShape2D_avsi1")
+debug_color = Color(0.929412, 0.266667, 0, 0.419608)
+
+[node name="death" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_376hy")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="navigation_finished" from="NavigationAgent2D" to="." method="_on_navigation_agent_2d_navigation_finished"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Zonebouffage" to="." method="_on_zonebouffage_body_entered"]
